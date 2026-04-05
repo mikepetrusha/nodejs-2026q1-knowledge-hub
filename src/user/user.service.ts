@@ -12,6 +12,7 @@ import { UpdatePasswordDto } from './dto/update-user.dto';
 import { User, UserRole } from './entities/user.entity';
 import { FindUserDto } from './dto/find-user.dto';
 import { paginateArray } from '../common/utils/paginate';
+import { sortItems } from '../common/utils/sort';
 
 @Injectable()
 export class UserService {
@@ -37,8 +38,11 @@ export class UserService {
   }
 
   findAll(query: FindUserDto) {
+    const ordered = query.sortBy
+      ? sortItems(this.users, query.sortBy, query.order ?? 'ASC')
+      : this.users;
     const { data, total, page, limit } = paginateArray(
-      this.users,
+      ordered,
       query.page,
       query.limit,
     );

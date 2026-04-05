@@ -11,6 +11,7 @@ import { randomUUID, UUID } from 'node:crypto';
 import { Comment } from './entities/comment.entity';
 import { FindCommentDto } from './dto/find-comment.dto';
 import { paginateArray } from '../common/utils/paginate';
+import { sortItems } from '../common/utils/sort';
 
 @Injectable()
 export class CommentService {
@@ -40,7 +41,10 @@ export class CommentService {
     const filtered = this.comments.filter(
       (comment) => comment.articleId === query.articleId,
     );
-    return paginateArray(filtered, query.page, query.limit);
+    const ordered = query.sortBy
+      ? sortItems(filtered, query.sortBy, query.order ?? 'ASC')
+      : filtered;
+    return paginateArray(ordered, query.page, query.limit);
   }
 
   findOne(id: UUID) {

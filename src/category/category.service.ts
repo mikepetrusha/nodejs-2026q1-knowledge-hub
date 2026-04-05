@@ -6,6 +6,7 @@ import { Category } from './entities/category.entity';
 import { randomUUID, UUID } from 'node:crypto';
 import { FindCategoryDto } from './dto/find-category.dto';
 import { paginateArray } from '../common/utils/paginate';
+import { sortItems } from '../common/utils/sort';
 
 @Injectable()
 export class CategoryService {
@@ -24,7 +25,10 @@ export class CategoryService {
   }
 
   findAll(query: FindCategoryDto) {
-    return paginateArray(this.categories, query.page, query.limit);
+    const ordered = query.sortBy
+      ? sortItems(this.categories, query.sortBy, query.order ?? 'ASC')
+      : this.categories;
+    return paginateArray(ordered, query.page, query.limit);
   }
 
   findOne(id: UUID) {

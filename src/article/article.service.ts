@@ -11,6 +11,7 @@ import { Article } from './entities/article.entity';
 import { randomUUID, UUID } from 'node:crypto';
 import { FindArticleDto } from './dto/find-article.dto';
 import { paginateArray } from '../common/utils/paginate';
+import { sortItems } from '../common/utils/sort';
 
 @Injectable()
 export class ArticleService {
@@ -51,7 +52,10 @@ export class ArticleService {
       }
       return true;
     });
-    return paginateArray(filtered, query.page, query.limit);
+    const ordered = query.sortBy
+      ? sortItems(filtered, query.sortBy, query.order ?? 'ASC')
+      : filtered;
+    return paginateArray(ordered, query.page, query.limit);
   }
 
   exists(id: UUID): boolean {
