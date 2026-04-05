@@ -10,6 +10,7 @@ import { UpdateArticleDto } from './dto/update-article.dto';
 import { Article } from './entities/article.entity';
 import { randomUUID, UUID } from 'node:crypto';
 import { FindArticleDto } from './dto/find-article.dto';
+import { paginateArray } from '../common/utils/paginate';
 
 @Injectable()
 export class ArticleService {
@@ -38,7 +39,7 @@ export class ArticleService {
   }
 
   findAll(query: FindArticleDto) {
-    return this.articles.filter((article) => {
+    const filtered = this.articles.filter((article) => {
       if (query.status && article.status !== query.status) {
         return false;
       }
@@ -50,6 +51,7 @@ export class ArticleService {
       }
       return true;
     });
+    return paginateArray(filtered, query.page, query.limit);
   }
 
   exists(id: UUID): boolean {

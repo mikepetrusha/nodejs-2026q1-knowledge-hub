@@ -4,6 +4,8 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 import { randomUUID, UUID } from 'node:crypto';
+import { FindCategoryDto } from './dto/find-category.dto';
+import { paginateArray } from '../common/utils/paginate';
 
 @Injectable()
 export class CategoryService {
@@ -21,8 +23,8 @@ export class CategoryService {
     return category;
   }
 
-  findAll() {
-    return this.categories;
+  findAll(query: FindCategoryDto) {
+    return paginateArray(this.categories, query.page, query.limit);
   }
 
   findOne(id: UUID) {

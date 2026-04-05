@@ -10,6 +10,7 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { randomUUID, UUID } from 'node:crypto';
 import { Comment } from './entities/comment.entity';
 import { FindCommentDto } from './dto/find-comment.dto';
+import { paginateArray } from '../common/utils/paginate';
 
 @Injectable()
 export class CommentService {
@@ -36,9 +37,10 @@ export class CommentService {
   }
 
   findAll(query: FindCommentDto) {
-    return this.comments.filter(
+    const filtered = this.comments.filter(
       (comment) => comment.articleId === query.articleId,
     );
+    return paginateArray(filtered, query.page, query.limit);
   }
 
   findOne(id: UUID) {

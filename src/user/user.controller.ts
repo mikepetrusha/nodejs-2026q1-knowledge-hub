@@ -9,11 +9,13 @@ import {
   Put,
   HttpStatus,
   HttpCode,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UUID } from 'node:crypto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
+import { FindUserDto } from './dto/find-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -25,8 +27,8 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  findAll(@Query() query: FindUserDto) {
+    return this.userService.findAll(query);
   }
 
   @Get(':id')

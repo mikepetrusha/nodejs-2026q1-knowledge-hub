@@ -10,6 +10,8 @@ import { CommentService } from '../comment/comment.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
 import { User, UserRole } from './entities/user.entity';
+import { FindUserDto } from './dto/find-user.dto';
+import { paginateArray } from '../common/utils/paginate';
 
 @Injectable()
 export class UserService {
@@ -34,8 +36,18 @@ export class UserService {
     return plainToInstance(User, user);
   }
 
-  findAll() {
-    return plainToInstance(User, this.users);
+  findAll(query: FindUserDto) {
+    const { data, total, page, limit } = paginateArray(
+      this.users,
+      query.page,
+      query.limit,
+    );
+    return {
+      total,
+      page,
+      limit,
+      data: plainToInstance(User, data),
+    };
   }
 
   findOne(id: UUID) {
