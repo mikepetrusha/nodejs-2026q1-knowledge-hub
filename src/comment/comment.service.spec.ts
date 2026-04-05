@@ -1,27 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { CommentService } from './comment.service';
 import { ArticleService } from '../article/article.service';
-import { CommentService } from '../comment/comment.service';
-import { UserService } from './user.service';
 
-describe('UserService', () => {
-  let service: UserService;
+describe('CommentService', () => {
+  let service: CommentService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        UserService,
+        CommentService,
         {
           provide: ArticleService,
-          useValue: { clearAuthorId: jest.fn() },
-        },
-        {
-          provide: CommentService,
-          useValue: { removeByAuthorId: jest.fn() },
+          useValue: { exists: jest.fn().mockReturnValue(true) },
         },
       ],
     }).compile();
 
-    service = module.get<UserService>(UserService);
+    service = module.get<CommentService>(CommentService);
   });
 
   it('should be defined', () => {

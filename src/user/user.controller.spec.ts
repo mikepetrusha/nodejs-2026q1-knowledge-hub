@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { ArticleService } from '../article/article.service';
+import { CommentService } from '../comment/comment.service';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 
@@ -8,7 +10,17 @@ describe('UserController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
-      providers: [UserService],
+      providers: [
+        UserService,
+        {
+          provide: ArticleService,
+          useValue: { clearAuthorId: jest.fn() },
+        },
+        {
+          provide: CommentService,
+          useValue: { removeByAuthorId: jest.fn() },
+        },
+      ],
     }).compile();
 
     controller = module.get<UserController>(UserController);

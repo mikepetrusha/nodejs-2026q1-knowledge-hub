@@ -1,24 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { CommentController } from './comment.controller';
+import { CommentService } from './comment.service';
 import { ArticleService } from '../article/article.service';
-import { CategoryController } from './category.controller';
-import { CategoryService } from './category.service';
 
-describe('CategoryController', () => {
-  let controller: CategoryController;
+describe('CommentController', () => {
+  let controller: CommentController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [CategoryController],
+      controllers: [CommentController],
       providers: [
-        CategoryService,
+        CommentService,
         {
           provide: ArticleService,
-          useValue: { clearCategoryId: jest.fn() },
+          useValue: { exists: jest.fn().mockReturnValue(true) },
         },
       ],
     }).compile();
 
-    controller = module.get<CategoryController>(CategoryController);
+    controller = module.get<CommentController>(CommentController);
   });
 
   it('should be defined', () => {

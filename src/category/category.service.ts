@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ArticleService } from '../article/article.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
@@ -7,6 +8,8 @@ import { randomUUID, UUID } from 'node:crypto';
 @Injectable()
 export class CategoryService {
   private categories: Category[] = [];
+
+  constructor(private readonly articleService: ArticleService) {}
 
   create(createCategoryDto: CreateCategoryDto) {
     const category: Category = {
@@ -44,6 +47,7 @@ export class CategoryService {
     if (!category) {
       throw new NotFoundException('Category not found');
     }
+    this.articleService.clearCategoryId(id);
     this.categories = this.categories.filter((category) => category.id !== id);
   }
 }

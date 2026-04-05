@@ -5,6 +5,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
+import { ArticleService } from '../article/article.service';
+import { CommentService } from '../comment/comment.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
 import { User, UserRole } from './entities/user.entity';
@@ -12,6 +14,11 @@ import { User, UserRole } from './entities/user.entity';
 @Injectable()
 export class UserService {
   private users: User[] = [];
+
+  constructor(
+    private readonly articleService: ArticleService,
+    private readonly commentService: CommentService,
+  ) {}
 
   create(createUserDto: CreateUserDto) {
     const user: User = {
@@ -57,6 +64,8 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
+    this.articleService.clearAuthorId(id);
+    this.commentService.removeByAuthorId(id);
     this.users = this.users.filter((user) => user.id !== id);
   }
 }
