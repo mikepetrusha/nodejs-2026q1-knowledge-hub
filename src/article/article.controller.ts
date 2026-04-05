@@ -15,6 +15,7 @@ import { ArticleService } from './article.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { FindArticleDto } from './dto/find-article.dto';
+import { PaginatedFindArticleDto } from './dto/paginated-find-article.dto';
 import { UUID } from 'node:crypto';
 
 @Controller('article')
@@ -29,6 +30,11 @@ export class ArticleController {
   @Get()
   findAll(@Query() findArticleDto: FindArticleDto) {
     return this.articleService.findAll(findArticleDto);
+  }
+
+  @Get('paginated')
+  findAllPaginated(@Query() query: PaginatedFindArticleDto) {
+    return this.articleService.findAllPaginated(query);
   }
 
   @Get(':id')

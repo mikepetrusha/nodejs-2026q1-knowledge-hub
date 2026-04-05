@@ -14,6 +14,7 @@ import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UUID } from 'node:crypto';
 import { FindCommentDto } from './dto/find-comment.dto';
+import { PaginatedFindCommentDto } from './dto/paginated-find-comment.dto';
 
 @Controller('comment')
 export class CommentController {
@@ -27,6 +28,11 @@ export class CommentController {
   @Get()
   findAll(@Query() findCommentDto: FindCommentDto) {
     return this.commentService.findAll(findCommentDto);
+  }
+
+  @Get('paginated')
+  findAllPaginated(@Query() query: PaginatedFindCommentDto) {
+    return this.commentService.findAllPaginated(query);
   }
 
   @Get(':id')

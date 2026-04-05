@@ -1,8 +1,7 @@
-import { IsEnum, IsIn, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
 import { ArticleStatus } from '../entities/article.entity';
-import { PaginationQueryDto } from '../../common/dto/pagination-query.dto';
 
-export class FindArticleDto extends PaginationQueryDto {
+export class FindArticleDto {
   @IsOptional()
   @IsEnum(ArticleStatus)
   status?: ArticleStatus;
@@ -14,23 +13,4 @@ export class FindArticleDto extends PaginationQueryDto {
   @IsOptional()
   @IsString()
   tag?: string;
-
-  @IsOptional()
-  @IsIn([
-    'id',
-    'title',
-    'status',
-    'authorId',
-    'categoryId',
-    'createdAt',
-    'updatedAt',
-  ])
-  sortBy?:
-    | 'id'
-    | 'title'
-    | 'status'
-    | 'authorId'
-    | 'categoryId'
-    | 'createdAt'
-    | 'updatedAt';
 }

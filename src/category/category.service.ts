@@ -4,7 +4,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 import { randomUUID, UUID } from 'node:crypto';
-import { FindCategoryDto } from './dto/find-category.dto';
+import { PaginatedCategoryQueryDto } from './dto/paginated-category-query.dto';
 import { paginateArray } from '../common/utils/paginate';
 import { sortItems } from '../common/utils/sort';
 
@@ -24,7 +24,11 @@ export class CategoryService {
     return category;
   }
 
-  findAll(query: FindCategoryDto) {
+  findAll() {
+    return this.categories;
+  }
+
+  findAllPaginated(query: PaginatedCategoryQueryDto) {
     const ordered = query.sortBy
       ? sortItems(this.categories, query.sortBy, query.order ?? 'ASC')
       : this.categories;

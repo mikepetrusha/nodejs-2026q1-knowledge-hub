@@ -10,6 +10,7 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { randomUUID, UUID } from 'node:crypto';
 import { Comment } from './entities/comment.entity';
 import { FindCommentDto } from './dto/find-comment.dto';
+import { PaginatedFindCommentDto } from './dto/paginated-find-comment.dto';
 import { paginateArray } from '../common/utils/paginate';
 import { sortItems } from '../common/utils/sort';
 
@@ -38,6 +39,12 @@ export class CommentService {
   }
 
   findAll(query: FindCommentDto) {
+    return this.comments.filter(
+      (comment) => comment.articleId === query.articleId,
+    );
+  }
+
+  findAllPaginated(query: PaginatedFindCommentDto) {
     const filtered = this.comments.filter(
       (comment) => comment.articleId === query.articleId,
     );

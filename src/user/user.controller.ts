@@ -15,7 +15,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UUID } from 'node:crypto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
-import { FindUserDto } from './dto/find-user.dto';
+import { PaginatedUserQueryDto } from './dto/paginated-user-query.dto';
 
 @Controller('user')
 export class UserController {
@@ -27,8 +27,13 @@ export class UserController {
   }
 
   @Get()
-  findAll(@Query() query: FindUserDto) {
-    return this.userService.findAll(query);
+  findAll() {
+    return this.userService.findAll();
+  }
+
+  @Get('paginated')
+  findAllPaginated(@Query() query: PaginatedUserQueryDto) {
+    return this.userService.findAllPaginated(query);
   }
 
   @Get(':id')

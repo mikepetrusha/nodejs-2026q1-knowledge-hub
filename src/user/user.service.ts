@@ -10,7 +10,7 @@ import { CommentService } from '../comment/comment.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
 import { User, UserRole } from './entities/user.entity';
-import { FindUserDto } from './dto/find-user.dto';
+import { PaginatedUserQueryDto } from './dto/paginated-user-query.dto';
 import { paginateArray } from '../common/utils/paginate';
 import { sortItems } from '../common/utils/sort';
 
@@ -37,7 +37,11 @@ export class UserService {
     return plainToInstance(User, user);
   }
 
-  findAll(query: FindUserDto) {
+  findAll() {
+    return plainToInstance(User, this.users);
+  }
+
+  findAllPaginated(query: PaginatedUserQueryDto) {
     const ordered = query.sortBy
       ? sortItems(this.users, query.sortBy, query.order ?? 'ASC')
       : this.users;

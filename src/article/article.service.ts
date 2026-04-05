@@ -10,6 +10,7 @@ import { UpdateArticleDto } from './dto/update-article.dto';
 import { Article } from './entities/article.entity';
 import { randomUUID, UUID } from 'node:crypto';
 import { FindArticleDto } from './dto/find-article.dto';
+import { PaginatedFindArticleDto } from './dto/paginated-find-article.dto';
 import { paginateArray } from '../common/utils/paginate';
 import { sortItems } from '../common/utils/sort';
 
@@ -39,8 +40,8 @@ export class ArticleService {
     return article;
   }
 
-  findAll(query: FindArticleDto) {
-    const filtered = this.articles.filter((article) => {
+  private filterArticles(query: FindArticleDto) {
+    return this.articles.filter((article) => {
       if (query.status && article.status !== query.status) {
         return false;
       }
@@ -52,6 +53,14 @@ export class ArticleService {
       }
       return true;
     });
+  }
+
+  findAll(query: FindArticleDto) {
+    return this.filterArticles(query);
+  }
+
+  findAllPaginated(query: PaginatedFindArticleDto) {
+    const filtered = this.filterArticles(query);
     const ordered = query.sortBy
       ? sortItems(filtered, query.sortBy, query.order ?? 'ASC')
       : filtered;

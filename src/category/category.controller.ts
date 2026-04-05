@@ -15,7 +15,7 @@ import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { UUID } from 'node:crypto';
-import { FindCategoryDto } from './dto/find-category.dto';
+import { PaginatedCategoryQueryDto } from './dto/paginated-category-query.dto';
 
 @Controller('category')
 export class CategoryController {
@@ -27,8 +27,13 @@ export class CategoryController {
   }
 
   @Get()
-  findAll(@Query() query: FindCategoryDto) {
-    return this.categoryService.findAll(query);
+  findAll() {
+    return this.categoryService.findAll();
+  }
+
+  @Get('paginated')
+  findAllPaginated(@Query() query: PaginatedCategoryQueryDto) {
+    return this.categoryService.findAllPaginated(query);
   }
 
   @Get(':id')
