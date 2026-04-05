@@ -1,4 +1,5 @@
 import { Exclude } from 'class-transformer';
+import { UUID } from 'node:crypto';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -6,7 +7,7 @@ export enum UserRole {
   VIEWER = 'viewer',
 }
 export class User {
-  id: string;
+  id: UUID;
   login: string;
 
   @Exclude()
